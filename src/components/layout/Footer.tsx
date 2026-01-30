@@ -7,7 +7,7 @@ const Footer = () => {
     { label: "Preguntas frecuentes", href: "#" },
     { label: "Envíos y entregas", href: "#" },
     { label: "Cambios y devoluciones", href: "#" },
-    { label: "Contacto", href: "#" },
+    { label: "Contacto", href: "/contacto" },
   ];
 
   return (
