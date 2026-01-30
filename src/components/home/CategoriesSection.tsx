@@ -9,6 +9,7 @@ import blusasImg from "@/assets/categories/blusas.jpg";
 import pantalonesImg from "@/assets/categories/pantalones.jpg";
 import faldasImg from "@/assets/categories/faldas.jpg";
 import accesoriosImg from "@/assets/categories/accesorios.jpg";
+import lenceriaImg from "@/assets/categories/lenceria.jpg";
 
 // Image mapping by slug
 const categoryImages: Record<string, string> = {
@@ -17,6 +18,7 @@ const categoryImages: Record<string, string> = {
   pantalones: pantalonesImg,
   faldas: faldasImg,
   accesorios: accesoriosImg,
+  lenceria: lenceriaImg,
 };
 
 const CategoriesSection = () => {
