@@ -1,21 +1,39 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, Heart, ShoppingBag, Menu, X, User, Moon, Sun } from "lucide-react";
+import { Search, Heart, ShoppingBag, Menu, User, Moon, Sun, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { useTheme } from "next-themes";
 import logo from "@/assets/brand/logo.png";
 
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  const categories = [
+    { name: "Vestidos", href: "/categoria/vestidos" },
+    { name: "Blusas", href: "/categoria/blusas" },
+    { name: "Pantalones", href: "/categoria/pantalones" },
+    { name: "Faldas", href: "/categoria/faldas" },
+    { name: "Accesorios", href: "/categoria/accesorios" },
+    { name: "Lencería", href: "/categoria/lenceria" },
+  ];
 
   const navLinks = [
     { name: "Inicio", href: "/" },
     { name: "Novedades", href: "/novedades" },
-    { name: "Vestidos", href: "/categoria/vestidos" },
-    { name: "Blusas", href: "/categoria/blusas" },
-    { name: "Pantalones", href: "/categoria/pantalones" },
     { name: "Sale", href: "/sale" },
   ];
 
@@ -46,6 +64,25 @@ const Header = () => {
                     {link.name}
                   </Link>
                 ))}
+                
+                {/* Mobile Categories Collapsible */}
+                <Collapsible open={isCategoriesOpen} onOpenChange={setIsCategoriesOpen}>
+                  <CollapsibleTrigger className="flex items-center justify-between w-full text-lg font-medium text-foreground hover:text-primary transition-colors py-2 border-b border-border">
+                    Categorías
+                    <ChevronDown className={`h-4 w-4 transition-transform ${isCategoriesOpen ? "rotate-180" : ""}`} />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="pl-4 space-y-2 mt-2">
+                    {categories.map((category) => (
+                      <Link
+                        key={category.name}
+                        to={category.href}
+                        className="block text-base text-muted-foreground hover:text-primary transition-colors py-2"
+                      >
+                        {category.name}
+                      </Link>
+                    ))}
+                  </CollapsibleContent>
+                </Collapsible>
               </nav>
             </SheetContent>
           </Sheet>
@@ -57,7 +94,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
+            {navLinks.slice(0, 2).map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
@@ -67,6 +104,31 @@ const Header = () => {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
               </Link>
             ))}
+
+            {/* Categories Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-foreground hover:text-primary transition-colors relative group outline-none">
+                Categorías
+                <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" className="w-48">
+                {categories.map((category) => (
+                  <DropdownMenuItem key={category.name} asChild>
+                    <Link to={category.href} className="w-full cursor-pointer">
+                      {category.name}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Link
+              to="/sale"
+              className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group"
+            >
+              Sale
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
+            </Link>
           </nav>
 
           {/* Actions */}
