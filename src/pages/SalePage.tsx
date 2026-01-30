@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -101,24 +102,42 @@ const SalePage = () => {
       <main className="flex-1">
         {/* Hero Banner */}
         <section className="relative h-[40vh] md:h-[50vh] overflow-hidden">
-          <img 
+          <motion.img 
             src={saleBanner} 
             alt="Sale" 
             className="w-full h-full object-cover"
+            initial={{ scale: 1.15 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 10, ease: "easeOut" }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white">
-              <div className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full mb-4">
+              <motion.div 
+                className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full mb-4"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
                 <Percent className="h-5 w-5" />
                 <span className="font-semibold">Hasta 30% OFF</span>
-              </div>
-              <h1 className="font-heading text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+              </motion.div>
+              <motion.h1 
+                className="font-heading text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
                 Sale
-              </h1>
-              <p className="text-lg md:text-xl max-w-xl mx-auto drop-shadow">
+              </motion.h1>
+              <motion.p 
+                className="text-lg md:text-xl max-w-xl mx-auto drop-shadow"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+              >
                 Ofertas exclusivas por tiempo limitado
-              </p>
+              </motion.p>
             </div>
           </div>
         </section>

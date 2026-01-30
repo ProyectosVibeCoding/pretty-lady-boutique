@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -97,20 +98,33 @@ const NovedadesPage = () => {
       <main className="flex-1">
         {/* Hero Banner */}
         <section className="relative h-[40vh] md:h-[50vh] overflow-hidden">
-          <img 
+          <motion.img 
             src={novedadesBanner} 
             alt="Nueva Colección" 
             className="w-full h-full object-cover"
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 8, ease: "easeOut" }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white">
-              <h1 className="font-heading text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+              <motion.h1 
+                className="font-heading text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
                 Novedades
-              </h1>
-              <p className="text-lg md:text-xl max-w-xl mx-auto drop-shadow">
+              </motion.h1>
+              <motion.p 
+                className="text-lg md:text-xl max-w-xl mx-auto drop-shadow"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
                 Descubrí las últimas tendencias de la temporada
-              </p>
+              </motion.p>
             </div>
           </div>
         </section>
