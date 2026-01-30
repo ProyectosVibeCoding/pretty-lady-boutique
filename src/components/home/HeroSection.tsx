@@ -50,10 +50,6 @@ const HeroSection = () => {
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
-            {/* Floating badge */}
-            <div className="absolute -bottom-4 -left-4 bg-accent text-accent-foreground px-6 py-3 rounded-full shadow-lg">
-              <span className="font-heading font-semibold">-20% OFF</span>
-            </div>
           </div>
         </div>
       </div>
