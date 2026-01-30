@@ -1,0 +1,132 @@
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Heart, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 0,
+  }).format(price);
+};
+
+const FeaturedProducts = () => {
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["featured-products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select(`
+          *,
+          categories(name, slug)
+        `)
+        .eq("is_featured", true)
+        .eq("is_active", true)
+        .limit(8);
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <section className="py-16 lg:py-24 bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <Skeleton className="h-8 w-64 mx-auto mb-4" />
+            <Skeleton className="h-4 w-80 mx-auto" />
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="space-y-3">
+                <Skeleton className="aspect-[3/4] rounded-xl" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="py-16 lg:py-24 bg-secondary/30">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="font-heading text-3xl lg:text-4xl font-bold text-foreground mb-4">
+            Productos Destacados
+          </h2>
+          <p className="text-muted-foreground max-w-md mx-auto">
+            Nuestra selección de prendas más populares esta temporada
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          {products?.map((product) => (
+            <Link
+              key={product.id}
+              to={`/producto/${product.slug}`}
+              className="group"
+            >
+              <div className="relative aspect-[3/4] rounded-xl bg-muted overflow-hidden mb-3">
+                {/* Product image placeholder */}
+                <div className="absolute inset-0 bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+                  <span className="text-4xl opacity-50">👗</span>
+                </div>
+                
+                {/* Badges */}
+                {product.is_featured && (
+                  <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-xs font-medium px-2 py-1 rounded-full">
+                    Destacado
+                  </span>
+                )}
+
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors" />
+                
+                {/* Quick actions */}
+                <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Button size="sm" className="flex-1 h-9">
+                    <ShoppingBag className="h-4 w-4 mr-1" />
+                    Agregar
+                  </Button>
+                  <Button size="sm" variant="secondary" className="h-9 w-9 p-0">
+                    <Heart className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Product info */}
+              <div className="space-y-1">
+                {product.categories && (
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                    {product.categories.name}
+                  </p>
+                )}
+                <h3 className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                  {product.name}
+                </h3>
+                <p className="font-heading font-semibold text-primary">
+                  {formatPrice(product.base_price)}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <Button asChild variant="outline" size="lg">
+            <Link to="/productos">Ver Todos los Productos</Link>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FeaturedProducts;
