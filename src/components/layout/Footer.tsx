@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
 import { Instagram, Facebook, Mail, Phone, MapPin } from "lucide-react";
+import SizeGuideModal from "@/components/product/SizeGuideModal";
 
 const Footer = () => {
+  const helpLinks = [
+    { label: "Preguntas frecuentes", href: "#" },
+    { label: "Envíos y entregas", href: "#" },
+    { label: "Cambios y devoluciones", href: "#" },
+    { label: "Contacto", href: "#" },
+  ];
+
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-12 lg:py-16">
@@ -42,21 +50,23 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-heading text-lg font-semibold">Ayuda</h3>
             <nav className="flex flex-col gap-2">
-              {[
-                "Preguntas frecuentes",
-                "Envíos y entregas",
-                "Cambios y devoluciones",
-                "Guía de talles",
-                "Contacto",
-              ].map((item) => (
+              {helpLinks.map((item) => (
                 <Link
-                  key={item}
-                  to="#"
+                  key={item.label}
+                  to={item.href}
                   className="text-primary-foreground/80 hover:text-accent transition-colors text-sm"
                 >
-                  {item}
+                  {item.label}
                 </Link>
               ))}
+              {/* Size Guide with Modal */}
+              <SizeGuideModal
+                trigger={
+                  <button className="text-primary-foreground/80 hover:text-accent transition-colors text-sm text-left">
+                    Guía de talles
+                  </button>
+                }
+              />
             </nav>
           </div>
 
