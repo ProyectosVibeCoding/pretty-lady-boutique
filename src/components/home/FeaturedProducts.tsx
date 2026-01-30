@@ -23,6 +23,11 @@ import faldaLineaA from "@/assets/products/falda-linea-a.jpg";
 import collarPerlas from "@/assets/products/collar-perlas.jpg";
 import arosDorados from "@/assets/products/aros-dorados.jpg";
 import panueloSeda from "@/assets/products/panuelo-seda.jpg";
+import braletteEncajeRosa from "@/assets/products/bralette-encaje-rosa.jpg";
+import slipSatenNegro from "@/assets/products/slip-saten-negro.jpg";
+import bodyEncajeBlanco from "@/assets/products/body-encaje-blanco.jpg";
+import conjuntoBordo from "@/assets/products/conjunto-bordo.jpg";
+import kimonoSedaRose from "@/assets/products/kimono-seda-rose.jpg";
 
 // Image mapping by slug
 const productImages: Record<string, string> = {
@@ -43,6 +48,11 @@ const productImages: Record<string, string> = {
   "collar-perla-dorado": collarPerlas,
   "aros-argolla-dorados": arosDorados,
   "panuelo-seda-rose": panueloSeda,
+  "bralette-encaje-rosa": braletteEncajeRosa,
+  "slip-saten-negro": slipSatenNegro,
+  "body-encaje-blanco": bodyEncajeBlanco,
+  "conjunto-bordo": conjuntoBordo,
+  "kimono-seda-rose": kimonoSedaRose,
 };
 
 const formatPrice = (price: number) => {
