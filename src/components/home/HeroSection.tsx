@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import collectionImage from "@/assets/hero/collection-image.jpg";
 
 const HeroSection = () => {
   return (
@@ -40,17 +41,14 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Image placeholder */}
+          {/* Collection Image */}
           <div className="relative hidden lg:block">
-            <div className="aspect-[3/4] rounded-2xl bg-gradient-to-br from-secondary to-muted overflow-hidden shadow-elegant">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center space-y-4 p-8">
-                  <div className="w-24 h-24 mx-auto rounded-full bg-accent/20 flex items-center justify-center">
-                    <span className="font-heading text-4xl text-accent">✨</span>
-                  </div>
-                  <p className="text-muted-foreground font-medium">Imagen de colección</p>
-                </div>
-              </div>
+            <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-elegant">
+              <img 
+                src={collectionImage} 
+                alt="Nueva Colección Pretty Lady"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              />
             </div>
             {/* Floating badge */}
             <div className="absolute -bottom-4 -left-4 bg-accent text-accent-foreground px-6 py-3 rounded-full shadow-lg">

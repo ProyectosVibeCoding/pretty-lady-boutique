@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Search, Heart, ShoppingBag, Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import logo from "@/assets/brand/logo.png";
 
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -49,9 +50,7 @@ const Header = () => {
 
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <h1 className="font-heading text-2xl lg:text-3xl font-bold text-primary">
-              Pretty Lady
-            </h1>
+            <img src={logo} alt="Pretty Lady" className="h-12 lg:h-14 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
