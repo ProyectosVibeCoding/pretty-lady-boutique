@@ -82,6 +82,7 @@ const NovedadesPage = () => {
         .from("products")
         .select(`*, categories(name, slug)`)
         .eq("is_active", true)
+        .eq("is_on_sale", false)
         .order("created_at", { ascending: false })
         .limit(12);
       
