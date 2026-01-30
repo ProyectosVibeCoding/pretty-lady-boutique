@@ -3,6 +3,22 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Import category images
+import vestidosImg from "@/assets/categories/vestidos.jpg";
+import blusasImg from "@/assets/categories/blusas.jpg";
+import pantalonesImg from "@/assets/categories/pantalones.jpg";
+import faldasImg from "@/assets/categories/faldas.jpg";
+import accesoriosImg from "@/assets/categories/accesorios.jpg";
+
+// Image mapping by slug
+const categoryImages: Record<string, string> = {
+  vestidos: vestidosImg,
+  blusas: blusasImg,
+  pantalones: pantalonesImg,
+  faldas: faldasImg,
+  accesorios: accesoriosImg,
+};
+
 const CategoriesSection = () => {
   const { data: categories, isLoading } = useQuery({
     queryKey: ["categories"],
@@ -17,14 +33,6 @@ const CategoriesSection = () => {
       return data;
     },
   });
-
-  const categoryIcons: Record<string, string> = {
-    vestidos: "👗",
-    blusas: "👚",
-    pantalones: "👖",
-    faldas: "🎀",
-    accesorios: "💎",
-  };
 
   if (isLoading) {
     return (
@@ -57,28 +65,43 @@ const CategoriesSection = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
-          {categories?.map((category) => (
-            <Link
-              key={category.id}
-              to={`/categoria/${category.slug}`}
-              className="group relative aspect-square rounded-2xl bg-gradient-to-br from-secondary to-muted overflow-hidden shadow-sm hover:shadow-elegant transition-all duration-300"
-            >
-              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-                <span className="text-5xl mb-3 group-hover:scale-110 transition-transform">
-                  {categoryIcons[category.slug] || "🛍️"}
-                </span>
-                <h3 className="font-heading text-lg font-semibold text-foreground text-center">
-                  {category.name}
-                </h3>
-                {category.description && (
-                  <p className="text-xs text-muted-foreground mt-1 text-center line-clamp-2">
-                    {category.description}
-                  </p>
+          {categories?.map((category) => {
+            const categoryImage = categoryImages[category.slug];
+            
+            return (
+              <Link
+                key={category.id}
+                to={`/categoria/${category.slug}`}
+                className="group relative aspect-square rounded-2xl overflow-hidden shadow-sm hover:shadow-elegant transition-all duration-300"
+              >
+                {/* Background image */}
+                {categoryImage ? (
+                  <img 
+                    src={categoryImage} 
+                    alt={category.name}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-secondary to-muted" />
                 )}
-              </div>
-            </Link>
-          ))}
+                
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+                
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-end p-4 text-center">
+                  <h3 className="font-heading text-lg font-semibold text-white drop-shadow-md">
+                    {category.name}
+                  </h3>
+                  {category.description && (
+                    <p className="text-xs text-white/80 mt-1 line-clamp-2 drop-shadow">
+                      {category.description}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

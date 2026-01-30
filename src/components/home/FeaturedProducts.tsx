@@ -12,6 +12,17 @@ import pantalonTiroAlto from "@/assets/products/pantalon-tiro-alto.jpg";
 import faldaPlisada from "@/assets/products/falda-plisada.jpg";
 import vestidoCocktail from "@/assets/products/vestido-cocktail.jpg";
 import blazerLino from "@/assets/products/blazer-lino.jpg";
+import vestidoWrap from "@/assets/products/vestido-wrap.jpg";
+import vestidoEncaje from "@/assets/products/vestido-encaje.jpg";
+import blusaCamisola from "@/assets/products/blusa-camisola.jpg";
+import blusaMangasGlobo from "@/assets/products/blusa-mangas-globo.jpg";
+import pantalonWideLeg from "@/assets/products/pantalon-wide-leg.jpg";
+import pantalonCigarette from "@/assets/products/pantalon-cigarette.jpg";
+import faldaLapiz from "@/assets/products/falda-lapiz.jpg";
+import faldaLineaA from "@/assets/products/falda-linea-a.jpg";
+import collarPerlas from "@/assets/products/collar-perlas.jpg";
+import arosDorados from "@/assets/products/aros-dorados.jpg";
+import panueloSeda from "@/assets/products/panuelo-seda.jpg";
 
 // Image mapping by slug
 const productImages: Record<string, string> = {
@@ -21,6 +32,17 @@ const productImages: Record<string, string> = {
   "falda-midi-plisada": faldaPlisada,
   "vestido-cocktail-negro": vestidoCocktail,
   "blazer-oversize-lino": blazerLino,
+  "vestido-wrap-rose": vestidoWrap,
+  "vestido-encaje-romantic": vestidoEncaje,
+  "camisola-seda-blanca": blusaCamisola,
+  "blusa-mangas-globo": blusaMangasGlobo,
+  "pantalon-wide-leg-negro": pantalonWideLeg,
+  "pantalon-cigarette-crema": pantalonCigarette,
+  "falda-lapiz-negra": faldaLapiz,
+  "falda-linea-a-crema": faldaLineaA,
+  "collar-perla-dorado": collarPerlas,
+  "aros-argolla-dorados": arosDorados,
+  "panuelo-seda-rose": panueloSeda,
 };
 
 const formatPrice = (price: number) => {
