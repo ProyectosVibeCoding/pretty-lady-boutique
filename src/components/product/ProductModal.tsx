@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Heart, ShoppingBag, Minus, Plus, Check, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useCart } from "@/hooks/useCart";
 import SizeGuideModal from "@/components/product/SizeGuideModal";
 
 // Import all product images
@@ -91,6 +92,9 @@ const ProductModal = ({ productId, isOpen, onClose }: ProductModalProps) => {
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  
+  const { addItem, isAuthenticated, setIsOpen: setCartOpen } = useCart();
 
   // Fetch product data
   const { data: product, isLoading: productLoading } = useQuery({
@@ -159,14 +163,31 @@ const ProductModal = ({ productId, isOpen, onClose }: ProductModalProps) => {
   const productImage = product ? productImages[product.slug] : null;
   const images = productImage ? [productImage, productImage, productImage] : [];
 
-  const handleAddToCart = () => {
-    if (!canAddToCart) {
+  const handleAddToCart = async () => {
+    if (!canAddToCart || !selectedVariant) {
       toast.error("Seleccioná talle y color antes de agregar al carrito");
       return;
     }
-    toast.success(`${product?.name} agregado al carrito`, {
-      description: `Talle: ${selectedSize} | Color: ${selectedColor} | Cantidad: ${quantity}`,
-    });
+    
+    if (!isAuthenticated) {
+      toast.error("Iniciá sesión para agregar productos al carrito");
+      onClose();
+      return;
+    }
+    
+    setIsAddingToCart(true);
+    try {
+      await addItem(selectedVariant.id, quantity);
+      toast.success(`${product?.name} agregado al carrito`, {
+        description: `Talle: ${selectedSize} | Color: ${selectedColor} | Cantidad: ${quantity}`,
+      });
+      onClose();
+      setCartOpen(true);
+    } catch (error) {
+      // Error handled in cart hook
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   const handleToggleFavorite = () => {
@@ -440,10 +461,19 @@ const ProductModal = ({ productId, isOpen, onClose }: ProductModalProps) => {
                 size="lg"
                 className="flex-1 h-14 text-lg"
                 onClick={handleAddToCart}
-                disabled={!canAddToCart}
+                disabled={!canAddToCart || isAddingToCart}
               >
-                <ShoppingBag className="h-5 w-5 mr-2" />
-                Agregar al carrito
+                {isAddingToCart ? (
+                  <>
+                    <span className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    Agregando...
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="h-5 w-5 mr-2" />
+                    Agregar al carrito
+                  </>
+                )}
               </Button>
             </div>
 
