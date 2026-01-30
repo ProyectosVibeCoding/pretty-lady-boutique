@@ -15,12 +15,14 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useTheme } from "next-themes";
+import { useCart } from "@/hooks/useCart";
 import logo from "@/assets/brand/logo.png";
 
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { itemCount, setIsOpen } = useCart();
 
   const categories = [
     { name: "Vestidos", href: "/categoria/vestidos" },
@@ -149,17 +151,26 @@ const Header = () => {
             >
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="hidden sm:flex">
-              <User className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="hidden sm:flex" asChild>
+              <Link to="/auth">
+                <User className="h-5 w-5" />
+              </Link>
             </Button>
             <Button variant="ghost" size="icon">
               <Heart className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative"
+              onClick={() => setIsOpen(true)}
+            >
               <ShoppingBag className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
-                0
-              </span>
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-accent text-accent-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                  {itemCount > 99 ? "99+" : itemCount}
+                </span>
+              )}
             </Button>
           </div>
         </div>
