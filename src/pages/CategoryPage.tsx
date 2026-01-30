@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import ProductModal from "@/components/product/ProductModal";
 import { Heart, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -73,6 +75,7 @@ const formatPrice = (price: number) => {
 
 const CategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   const { data: category, isLoading: categoryLoading } = useQuery({
     queryKey: ["category", slug],
@@ -106,6 +109,11 @@ const CategoryPage = () => {
   });
 
   const isLoading = categoryLoading || productsLoading;
+
+  const handleProductClick = (productId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setSelectedProductId(productId);
+  };
 
   if (isLoading) {
     return (
@@ -182,10 +190,10 @@ const CategoryPage = () => {
               const productImage = productImages[product.slug];
               
               return (
-                <Link
+                <button
                   key={product.id}
-                  to={`/producto/${product.slug}`}
-                  className="group"
+                  onClick={(e) => handleProductClick(product.id, e)}
+                  className="group text-left"
                 >
                   <div className="relative aspect-[3/4] rounded-xl bg-muted overflow-hidden mb-3">
                     {productImage ? (
@@ -211,7 +219,7 @@ const CategoryPage = () => {
                     <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Button size="sm" className="flex-1 h-9">
                         <ShoppingBag className="h-4 w-4 mr-1" />
-                        Agregar
+                        Ver detalle
                       </Button>
                       <Button size="sm" variant="secondary" className="h-9 w-9 p-0">
                         <Heart className="h-4 w-4" />
@@ -227,7 +235,7 @@ const CategoryPage = () => {
                       {formatPrice(product.base_price)}
                     </p>
                   </div>
-                </Link>
+                </button>
               );
             })}
           </div>
@@ -240,6 +248,13 @@ const CategoryPage = () => {
         )}
       </main>
       <Footer />
+
+      {/* Product Modal */}
+      <ProductModal
+        productId={selectedProductId}
+        isOpen={!!selectedProductId}
+        onClose={() => setSelectedProductId(null)}
+      />
     </div>
   );
 };
