@@ -337,6 +337,45 @@ const ContactPage = () => {
             </div>
           </div>
         </section>
+
+        {/* Map Section */}
+        <section className="py-12 lg:py-16 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-8"
+            >
+              <h2 className="font-heading text-2xl lg:text-3xl font-semibold text-foreground mb-2">
+                Encontranos
+              </h2>
+              <p className="text-muted-foreground">
+                Visitá nuestra tienda en Buenos Aires
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="rounded-2xl overflow-hidden shadow-lg"
+            >
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52520.30695191668!2d-58.43734867832031!3d-34.60373939999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca3b4ef90cbd%3A0xa0b3812e88e88e87!2sBuenos%20Aires%2C%20Argentina!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
+                width="100%"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Ubicación de Pretty Lady en Buenos Aires"
+                className="w-full"
+              />
+            </motion.div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
