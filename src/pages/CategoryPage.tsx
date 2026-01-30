@@ -30,6 +30,9 @@ import slipSatenNegro from "@/assets/products/slip-saten-negro.jpg";
 import bodyEncajeBlanco from "@/assets/products/body-encaje-blanco.jpg";
 import conjuntoBordo from "@/assets/products/conjunto-bordo.jpg";
 import kimonoSedaRose from "@/assets/products/kimono-seda-rose.jpg";
+import vestidoLenceroRosa from "@/assets/products/vestido-lencero-rosa.jpg";
+import blusaCropLino from "@/assets/products/blusa-crop-lino.jpg";
+import jeanMomFit from "@/assets/products/jean-mom-fit.jpg";
 
 const productImages: Record<string, string> = {
   "vestido-floral-verano": vestidoFloral,
@@ -55,6 +58,9 @@ const productImages: Record<string, string> = {
   "body-encaje-blanco": bodyEncajeBlanco,
   "conjunto-bordo": conjuntoBordo,
   "kimono-seda-rose": kimonoSedaRose,
+  "vestido-lencero-rosa": vestidoLenceroRosa,
+  "blusa-crop-lino": blusaCropLino,
+  "jean-mom-fit": jeanMomFit,
 };
 
 const formatPrice = (price: number) => {
