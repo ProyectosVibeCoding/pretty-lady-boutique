@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Heart, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import ProductModal from "@/components/product/ProductModal";
 
 // Import product images
 import vestidoFloral from "@/assets/products/vestido-floral.jpg";
@@ -70,6 +71,8 @@ const formatPrice = (price: number) => {
 };
 
 const FeaturedProducts = () => {
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+
   const { data: products, isLoading } = useQuery({
     queryKey: ["featured-products"],
     queryFn: async () => {
@@ -87,6 +90,10 @@ const FeaturedProducts = () => {
       return data;
     },
   });
+
+  const handleProductClick = (productId: string) => {
+    setSelectedProductId(productId);
+  };
 
   if (isLoading) {
     return (
@@ -127,10 +134,10 @@ const FeaturedProducts = () => {
             const productImage = productImages[product.slug];
             
             return (
-              <Link
+              <button
                 key={product.id}
-                to={`/producto/${product.slug}`}
-                className="group"
+                onClick={() => handleProductClick(product.id)}
+                className="group text-left"
               >
                 <div className="relative aspect-[3/4] rounded-xl bg-muted overflow-hidden mb-3">
                   {/* Product image */}
@@ -160,7 +167,7 @@ const FeaturedProducts = () => {
                   <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button size="sm" className="flex-1 h-9">
                       <ShoppingBag className="h-4 w-4 mr-1" />
-                      Agregar
+                      Ver detalle
                     </Button>
                     <Button size="sm" variant="secondary" className="h-9 w-9 p-0">
                       <Heart className="h-4 w-4" />
@@ -182,17 +189,24 @@ const FeaturedProducts = () => {
                     {formatPrice(product.base_price)}
                   </p>
                 </div>
-              </Link>
+              </button>
             );
           })}
         </div>
 
         <div className="text-center mt-12">
-          <Button asChild variant="outline" size="lg">
-            <Link to="/productos">Ver Todos los Productos</Link>
+          <Button variant="outline" size="lg">
+            Ver Todos los Productos
           </Button>
         </div>
       </div>
+
+      {/* Product Modal */}
+      <ProductModal
+        productId={selectedProductId}
+        isOpen={!!selectedProductId}
+        onClose={() => setSelectedProductId(null)}
+      />
     </section>
   );
 };
