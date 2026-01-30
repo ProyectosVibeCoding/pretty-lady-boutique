@@ -122,7 +122,7 @@ const PromoSection = () => {
       </div>
 
       {/* Newsletter */}
-      <div ref={newsletterRef} className="bg-primary text-primary-foreground py-16 overflow-hidden">
+      <div ref={newsletterRef} className="bg-muted text-foreground py-16 overflow-hidden">
         <motion.div 
           className="container mx-auto px-4"
           variants={newsletterVariants}
@@ -139,7 +139,7 @@ const PromoSection = () => {
               Unite a Nuestra Comunidad
             </motion.h2>
             <motion.p 
-              className="text-primary-foreground/80 mb-8"
+              className="text-muted-foreground mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={isNewsletterInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ delay: 0.3, duration: 0.5 }}
@@ -158,7 +158,7 @@ const PromoSection = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Tu email"
-                className="flex-1 px-4 py-3 rounded-lg bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent transition-all duration-300"
+                className="flex-1 px-4 py-3 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
                 required
               />
               <motion.div
