@@ -5,6 +5,24 @@ import { Heart, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Import product images
+import vestidoFloral from "@/assets/products/vestido-floral.jpg";
+import blusaSaten from "@/assets/products/blusa-saten.jpg";
+import pantalonTiroAlto from "@/assets/products/pantalon-tiro-alto.jpg";
+import faldaPlisada from "@/assets/products/falda-plisada.jpg";
+import vestidoCocktail from "@/assets/products/vestido-cocktail.jpg";
+import blazerLino from "@/assets/products/blazer-lino.jpg";
+
+// Image mapping by slug
+const productImages: Record<string, string> = {
+  "vestido-floral-verano": vestidoFloral,
+  "blusa-elegante-saten": blusaSaten,
+  "pantalon-palazzo-negro": pantalonTiroAlto,
+  "falda-midi-plisada": faldaPlisada,
+  "vestido-cocktail-negro": vestidoCocktail,
+  "blazer-oversize-lino": blazerLino,
+};
+
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat("es-AR", {
     style: "currency",
@@ -67,56 +85,68 @@ const FeaturedProducts = () => {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-          {products?.map((product) => (
-            <Link
-              key={product.id}
-              to={`/producto/${product.slug}`}
-              className="group"
-            >
-              <div className="relative aspect-[3/4] rounded-xl bg-muted overflow-hidden mb-3">
-                {/* Product image placeholder */}
-                <div className="absolute inset-0 bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
-                  <span className="text-4xl opacity-50">👗</span>
-                </div>
-                
-                {/* Badges */}
-                {product.is_featured && (
-                  <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-xs font-medium px-2 py-1 rounded-full">
-                    Destacado
-                  </span>
-                )}
+          {products?.map((product) => {
+            const productImage = productImages[product.slug];
+            
+            return (
+              <Link
+                key={product.id}
+                to={`/producto/${product.slug}`}
+                className="group"
+              >
+                <div className="relative aspect-[3/4] rounded-xl bg-muted overflow-hidden mb-3">
+                  {/* Product image */}
+                  {productImage ? (
+                    <img 
+                      src={productImage} 
+                      alt={product.name}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
+                      <span className="text-4xl opacity-50">👗</span>
+                    </div>
+                  )}
+                  
+                  {/* Badges */}
+                  {product.is_featured && (
+                    <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-xs font-medium px-2 py-1 rounded-full">
+                      Destacado
+                    </span>
+                  )}
 
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors" />
-                
-                {/* Quick actions */}
-                <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button size="sm" className="flex-1 h-9">
-                    <ShoppingBag className="h-4 w-4 mr-1" />
-                    Agregar
-                  </Button>
-                  <Button size="sm" variant="secondary" className="h-9 w-9 p-0">
-                    <Heart className="h-4 w-4" />
-                  </Button>
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors" />
+                  
+                  {/* Quick actions */}
+                  <div className="absolute bottom-3 left-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button size="sm" className="flex-1 h-9">
+                      <ShoppingBag className="h-4 w-4 mr-1" />
+                      Agregar
+                    </Button>
+                    <Button size="sm" variant="secondary" className="h-9 w-9 p-0">
+                      <Heart className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
 
-              {/* Product info */}
-              <div className="space-y-1">
-                {product.categories && (
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                    {product.categories.name}
+                {/* Product info */}
+                <div className="space-y-1">
+                  {product.categories && (
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                      {product.categories.name}
+                    </p>
+                  )}
+                  <h3 className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                    {product.name}
+                  </h3>
+                  <p className="font-heading font-semibold text-primary">
+                    {formatPrice(product.base_price)}
                   </p>
-                )}
-                <h3 className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
-                  {product.name}
-                </h3>
-                <p className="font-heading font-semibold text-primary">
-                  {formatPrice(product.base_price)}
-                </p>
-              </div>
-            </Link>
-          ))}
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         <div className="text-center mt-12">
