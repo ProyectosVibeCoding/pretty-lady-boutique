@@ -82,6 +82,7 @@ const SalePage = () => {
         .from("products")
         .select(`*, categories(name, slug)`)
         .eq("is_active", true)
+        .eq("is_on_sale", true)
         .order("base_price", { ascending: true })
         .limit(12);
       
