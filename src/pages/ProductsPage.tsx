@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
@@ -74,45 +74,24 @@ const formatPrice = (price: number) => {
   }).format(price);
 };
 
-const CategoryPage = () => {
-  const { slug } = useParams<{ slug: string }>();
+const ProductsPage = () => {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
-  const { data: category, isLoading: categoryLoading } = useQuery({
-    queryKey: ["category", slug],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("*")
-        .eq("slug", slug)
-        .single();
-      
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!slug,
-  });
-
-  const { data: products, isLoading: productsLoading } = useQuery({
-    queryKey: ["category-products", category?.id],
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["all-products"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
         .select(`*, categories(name, slug)`)
-        .eq("category_id", category!.id)
         .eq("is_active", true)
         .order("created_at", { ascending: false });
       
       if (error) throw error;
       return data;
     },
-    enabled: !!category?.id,
   });
 
-  const isLoading = categoryLoading || productsLoading;
-
-  const handleProductClick = (productId: string, e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleProductClick = (productId: string) => {
     setSelectedProductId(productId);
   };
 
@@ -124,7 +103,7 @@ const CategoryPage = () => {
           <Skeleton className="h-10 w-48 mb-4" />
           <Skeleton className="h-6 w-64 mb-8" />
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-            {[...Array(8)].map((_, i) => (
+            {[...Array(12)].map((_, i) => (
               <div key={i} className="space-y-3">
                 <Skeleton className="aspect-[3/4] rounded-xl" />
                 <Skeleton className="h-4 w-3/4" />
@@ -132,26 +111,6 @@ const CategoryPage = () => {
               </div>
             ))}
           </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (!category) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="container mx-auto px-4 py-24 text-center">
-          <h1 className="font-heading text-3xl font-bold text-foreground mb-4">
-            Categoría no encontrada
-          </h1>
-          <p className="text-muted-foreground mb-8">
-            La categoría que buscás no existe.
-          </p>
-          <Button asChild>
-            <Link to="/">Volver al inicio</Link>
-          </Button>
         </main>
         <Footer />
       </div>
@@ -166,19 +125,17 @@ const CategoryPage = () => {
         <nav className="text-sm text-muted-foreground mb-6">
           <Link to="/" className="hover:text-primary">Inicio</Link>
           <span className="mx-2">/</span>
-          <span className="text-foreground">{category.name}</span>
+          <span className="text-foreground">Todos los Productos</span>
         </nav>
 
-        {/* Category Header */}
+        {/* Page Header */}
         <div className="mb-10">
           <h1 className="font-heading text-3xl lg:text-4xl font-bold text-foreground mb-2">
-            {category.name}
+            Todos los Productos
           </h1>
-          {category.description && (
-            <p className="text-muted-foreground max-w-2xl">
-              {category.description}
-            </p>
-          )}
+          <p className="text-muted-foreground max-w-2xl">
+            Explorá nuestra colección completa de prendas exclusivas
+          </p>
           <p className="text-sm text-muted-foreground mt-2">
             {products?.length || 0} productos
           </p>
@@ -193,7 +150,7 @@ const CategoryPage = () => {
               return (
                 <button
                   key={product.id}
-                  onClick={(e) => handleProductClick(product.id, e)}
+                  onClick={() => handleProductClick(product.id)}
                   className="group text-left"
                 >
                   <div className="relative aspect-[3/4] rounded-xl bg-muted overflow-hidden mb-3">
@@ -229,6 +186,11 @@ const CategoryPage = () => {
                   </div>
 
                   <div className="space-y-1">
+                    {product.categories && (
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                        {product.categories.name}
+                      </p>
+                    )}
                     <h3 className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
                       {product.name}
                     </h3>
@@ -243,7 +205,7 @@ const CategoryPage = () => {
         ) : (
           <div className="text-center py-12">
             <p className="text-muted-foreground">
-              No hay productos en esta categoría todavía.
+              No hay productos disponibles.
             </p>
           </div>
         )}
@@ -260,4 +222,4 @@ const CategoryPage = () => {
   );
 };
 
-export default CategoryPage;
+export default ProductsPage;

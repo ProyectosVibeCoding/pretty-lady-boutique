@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Heart, ShoppingBag } from "lucide-react";
@@ -12,6 +13,7 @@ import blusaSaten from "@/assets/products/blusa-saten.jpg";
 import pantalonTiroAlto from "@/assets/products/pantalon-tiro-alto.jpg";
 import faldaPlisada from "@/assets/products/falda-plisada.jpg";
 import vestidoCocktail from "@/assets/products/vestido-cocktail.jpg";
+import vestidoCocktailBordo from "@/assets/products/vestido-cocktail-bordo.jpg";
 import blazerLino from "@/assets/products/blazer-lino.jpg";
 import vestidoWrap from "@/assets/products/vestido-wrap.jpg";
 import vestidoEncaje from "@/assets/products/vestido-encaje.jpg";
@@ -40,6 +42,7 @@ const productImages: Record<string, string> = {
   "pantalon-palazzo-negro": pantalonTiroAlto,
   "falda-midi-plisada": faldaPlisada,
   "vestido-cocktail-negro": vestidoCocktail,
+  "vestido-cocktail-bordo": vestidoCocktailBordo,
   "blazer-oversize-lino": blazerLino,
   "vestido-wrap-rose": vestidoWrap,
   "vestido-encaje-romantic": vestidoEncaje,
@@ -195,8 +198,8 @@ const FeaturedProducts = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg">
-            Ver Todos los Productos
+          <Button variant="outline" size="lg" asChild>
+            <Link to="/productos">Ver Todos los Productos</Link>
           </Button>
         </div>
       </div>
