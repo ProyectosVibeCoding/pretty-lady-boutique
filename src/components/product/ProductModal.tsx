@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Heart, ShoppingBag, Minus, Plus, Check, Truck, RotateCcw, Shield, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import SizeGuideModal from "@/components/product/SizeGuideModal";
 
 // Import all product images
 import vestidoFloral from "@/assets/products/vestido-floral.jpg";
@@ -354,9 +355,13 @@ const ProductModal = ({ productId, isOpen, onClose }: ProductModalProps) => {
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-medium text-foreground">Talle</span>
-                  <button className="text-sm text-primary hover:underline">
-                    Guía de talles
-                  </button>
+                  <SizeGuideModal
+                    trigger={
+                      <button className="text-sm text-primary hover:underline">
+                        Guía de talles
+                      </button>
+                    }
+                  />
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {sizes.map((size) => {
