@@ -37,6 +37,7 @@ const Header = () => {
     { name: "Inicio", href: "/" },
     { name: "Novedades", href: "/novedades" },
     { name: "Sale", href: "/sale" },
+    { name: "Contacto", href: "/contacto" },
   ];
 
   return (
@@ -124,13 +125,16 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link
-              to="/sale"
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group"
-            >
-              Sale
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
-            </Link>
+            {navLinks.slice(2).map((link) => (
+              <Link
+                key={link.name}
+                to={link.href}
+                className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group"
+              >
+                {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
+              </Link>
+            ))}
           </nav>
 
           {/* Actions */}
