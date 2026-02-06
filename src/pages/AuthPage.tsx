@@ -38,9 +38,12 @@ const AuthPage = () => {
       if (error) throw error;
       
       toast.success("¡Bienvenida!");
-      navigate("/");
+      navigate(-1); // Go back to previous page
     } catch (error: any) {
-      toast.error(error.message || "Error al iniciar sesión");
+      const message = error.message === "Invalid login credentials" 
+        ? "Email o contraseña incorrectos" 
+        : error.message || "Error al iniciar sesión";
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -62,31 +65,41 @@ const AuthPage = () => {
     setIsLoading(true);
     
     try {
+      const redirectUrl = `${window.location.origin}/`;
+      
       const { data, error } = await supabase.auth.signUp({
         email: registerEmail,
         password: registerPassword,
         options: {
+          emailRedirectTo: redirectUrl,
           data: {
             full_name: registerName,
           },
         },
       });
       
-      if (error) throw error;
-      
-      // Create profile
-      if (data.user) {
-        await supabase.from("profiles").insert({
-          user_id: data.user.id,
-          email: registerEmail,
-          full_name: registerName,
-        });
+      if (error) {
+        if (error.message.includes("already registered")) {
+          throw new Error("Este email ya está registrado. Iniciá sesión o usá otro email.");
+        }
+        throw error;
       }
       
-      toast.success("¡Cuenta creada exitosamente!");
-      navigate("/");
+      // Profile is created automatically by trigger, just update the name if needed
+      if (data.user && registerName) {
+        await supabase
+          .from("profiles")
+          .update({ full_name: registerName })
+          .eq("user_id", data.user.id);
+      }
+      
+      toast.success("¡Cuenta creada! Revisá tu email para confirmar.", {
+        duration: 5000,
+      });
+      // Don't navigate - user needs to verify email
     } catch (error: any) {
-      toast.error(error.message || "Error al crear cuenta");
+      const message = error.message || "Error al crear cuenta";
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
