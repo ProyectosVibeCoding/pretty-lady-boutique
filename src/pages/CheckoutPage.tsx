@@ -125,17 +125,19 @@ const CheckoutPage = () => {
   
   const [paymentMethod, setPaymentMethod] = useState<"mercadopago" | "transfer">("mercadopago");
 
-  // Redirect if not authenticated or cart is empty
+  const [orderCompleted, setOrderCompleted] = useState(false);
+
+  // Redirect if not authenticated or cart is empty (but not if order was completed)
   useEffect(() => {
     if (!isAuthenticated) {
       toast.error("Iniciá sesión para continuar");
       navigate("/auth");
       return;
     }
-    if (items.length === 0 && currentStep !== 3) {
+    if (items.length === 0 && currentStep !== 3 && !orderCompleted) {
       navigate("/productos");
     }
-  }, [isAuthenticated, items.length, navigate, currentStep]);
+  }, [isAuthenticated, items.length, navigate, currentStep, orderCompleted]);
 
   // Load user profile data
   useEffect(() => {
@@ -258,12 +260,14 @@ const CheckoutPage = () => {
           .eq("id", order.id);
       }
       
-      // Clear the cart
-      await clearCart();
-      
+      // Set order completed FIRST to prevent redirect
+      setOrderCompleted(true);
       setOrderId(order.id);
       setOrderNumber(order.order_number);
       setCurrentStep(3);
+      
+      // Clear the cart AFTER setting the step
+      await clearCart();
       
       toast.success("¡Pedido realizado con éxito!");
     } catch (error: any) {
